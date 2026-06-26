@@ -58,7 +58,7 @@ export default function BudgetsPage() {
           <input type="number" value={form.allocated_amount} onChange={e=>setForm({...form,allocated_amount:e.target.value})}
             placeholder="₹ Amount" className="flex-1 bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-primary-500"/>
           <button onClick={handleAdd} disabled={adding}
-            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-500 disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-colors">
+            className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-500 hover:shadow-[0_0_15px_rgba(139,92,246,0.5)] disabled:opacity-50 text-white rounded-lg text-sm font-medium transition-all duration-300">
             <Plus size={16}/> Add
           </button>
         </div>
@@ -71,9 +71,9 @@ export default function BudgetsPage() {
         <div className="space-y-2">
           {budgets.map(b => {
             const pct = b.allocated_amount > 0 ? Math.min((b.spent_amount/b.allocated_amount)*100, 100) : 0;
-            const color = pct > 90 ? "bg-red-500" : pct > 70 ? "bg-yellow-500" : "bg-primary-500";
+            const color = pct > 90 ? "bg-gradient-to-r from-accent-pink to-red-500 shadow-[0_0_8px_rgba(255,0,127,0.5)]" : pct > 70 ? "bg-gradient-to-r from-yellow-400 to-orange-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]" : "bg-gradient-to-r from-primary-400 to-primary-600 shadow-[0_0_8px_rgba(139,92,246,0.5)]";
             return (
-              <div key={b.id} className="bg-dark-900 border border-slate-800 rounded-xl p-4">
+              <div key={b.id} className="bg-dark-900 border border-slate-800 rounded-xl p-4 hover:shadow-lg hover:shadow-primary-500/5 transition-all duration-300">
                 <div className="flex items-center justify-between mb-2">
                   <div>
                     <span className="text-white font-medium">{b.category}</span>

@@ -22,11 +22,11 @@ export default function Layout() {
   const handleLogout = () => { logout(); navigate("/login"); };
 
   const Sidebar = ({ mobile = false }) => (
-    <div className={`flex flex-col h-full bg-dark-900 border-r border-slate-800 ${mobile ? "w-64" : "w-64"}`}>
+    <div className={`flex flex-col h-full bg-dark-900 border-r border-slate-800 ${mobile ? "w-64" : "w-64"} z-20`}>
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-800">
-        <BrainCircuit className="text-primary-500" size={28} />
-        <span className="text-white font-bold text-lg tracking-tight">FinSense <span className="text-primary-500">AI</span></span>
+        <BrainCircuit className="text-primary-400 animate-pulse" size={28} />
+        <span className="bg-gradient-to-r from-primary-400 via-accent-purple to-accent-cyan bg-clip-text text-transparent font-extrabold text-lg tracking-tight neon-title">FinSense AI</span>
       </div>
 
       {/* Nav */}
@@ -72,9 +72,14 @@ export default function Layout() {
   );
 
   return (
-    <div className="flex h-screen bg-dark-950 text-white overflow-hidden">
+    <div className="flex h-screen bg-dark-950 text-white overflow-hidden relative">
+      {/* Ambient background glows */}
+      <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-primary-500/10 blur-[130px] pointer-events-none animate-pulse-slow z-0" />
+      <div className="absolute bottom-[-10%] left-[20%] w-[40vw] h-[40vw] rounded-full bg-accent-cyan/5 blur-[110px] pointer-events-none z-0" />
+      <div className="absolute top-[40%] left-[-10%] w-[30vw] h-[30vw] rounded-full bg-accent-pink/5 blur-[100px] pointer-events-none z-0" />
+
       {/* Desktop sidebar */}
-      <div className="hidden md:flex flex-shrink-0">
+      <div className="hidden md:flex flex-shrink-0 z-10">
         <Sidebar />
       </div>
 
@@ -89,12 +94,12 @@ export default function Layout() {
       )}
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden z-10 relative">
         {/* Mobile topbar */}
-        <div className="md:hidden flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-dark-900">
+        <div className="md:hidden flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-dark-900 z-20">
           <div className="flex items-center gap-2">
-            <BrainCircuit className="text-primary-500" size={22} />
-            <span className="text-white font-bold">FinSense AI</span>
+            <BrainCircuit className="text-primary-400 animate-pulse" size={22} />
+            <span className="bg-gradient-to-r from-primary-400 to-accent-cyan bg-clip-text text-transparent font-extrabold text-md tracking-tight neon-title">FinSense AI</span>
           </div>
           <button onClick={() => setOpen(true)} className="text-slate-400 hover:text-white">
             {open ? <X size={22} /> : <Menu size={22} />}

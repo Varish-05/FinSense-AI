@@ -3,6 +3,17 @@ import { expensesAPI } from "../utils/api";
 import toast from "react-hot-toast";
 import { Plus, Trash2, Upload, Edit3 } from "lucide-react";
 
+function getErrorMessage(err, fallback) {
+  const detail = err?.response?.data?.detail;
+  if (!detail) return fallback;
+  if (typeof detail === "string") return detail;
+  if (Array.isArray(detail)) {
+    return detail.map(d => d.msg || JSON.stringify(d)).join(", ");
+  }
+  if (typeof detail === "object") return detail.msg || JSON.stringify(detail);
+  return fallback;
+}
+
 const CATEGORIES = ["Food","Transport","Healthcare","Entertainment","Education","Shopping","Utilities","Investments","Travel","Miscellaneous"];
 const PAYMENT_MODES = ["UPI","Credit Card","Debit Card","Cash","Net Banking","Wallet"];
 
@@ -10,11 +21,11 @@ const EMPTY_FORM = { amount: "", date: new Date().toISOString().slice(0,10), mer
 
 function Modal({ title, onClose, children }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-      <div className="bg-dark-900 border border-slate-700 rounded-2xl w-full max-w-lg p-6 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-white font-semibold text-lg">{title}</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-white">✕</button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+      <div className="bg-dark-900 border border-slate-700/60 rounded-2xl w-full max-w-lg p-6 space-y-4 shadow-2xl backdrop-blur-xl animate-float">
+        <div className="flex items-center justify-between border-b border-white/5 pb-3">
+          <h2 className="text-white font-bold text-lg tracking-tight neon-title">{title}</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors text-lg">✕</button>
         </div>
         {children}
       </div>
@@ -85,7 +96,7 @@ export default function ExpensesPage() {
       const r = await expensesAPI.uploadCSV(file);
       toast.success(`Imported ${r.data.length} transactions`, { id: t });
       load();
-    } catch { toast.error("CSV import failed", { id: t }); }
+    } catch (err) { toast.error(getErrorMessage(err, "CSV import failed"), { id: t }); }
     e.target.value = "";
   };
 
@@ -97,11 +108,11 @@ export default function ExpensesPage() {
           <p className="text-slate-400 text-sm">{expenses.length} transactions</p>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => fileRef.current.click()} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-700 text-slate-300 hover:border-primary-500 hover:text-primary-400 text-sm transition-colors">
+          <button onClick={() => fileRef.current.click()} className="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-700 text-slate-300 hover:border-primary-500 hover:text-primary-400 hover:shadow-[0_0_10px_rgba(139,92,246,0.2)] text-sm transition-all duration-300">
             <Upload size={16}/> CSV
           </button>
           <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={handleCSV}/>
-          <button onClick={openAdd} className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-500 text-white rounded-lg text-sm font-medium transition-colors">
+          <button onClick={openAdd} className="flex items-center gap-2 px-4 py-2 bg-primary-600 hover:bg-primary-500 hover:shadow-[0_0_15px_rgba(139,92,246,0.5)] text-white rounded-lg text-sm font-medium transition-all duration-300">
             <Plus size={16}/> Add Expense
           </button>
         </div>
@@ -118,9 +129,9 @@ export default function ExpensesPage() {
         <div className="bg-dark-900 border border-slate-800 rounded-xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-800">
+              <tr className="border-b border-slate-800/80 bg-white/[0.02]">
                 {["Date","Merchant","Category","Amount","Mode",""].map(h => (
-                  <th key={h} className="text-left text-slate-400 font-medium px-4 py-3 text-xs">{h}</th>
+                  <th key={h} className="text-left text-slate-400 font-semibold px-4 py-3.5 text-xs uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
@@ -130,7 +141,7 @@ export default function ExpensesPage() {
                   <td className="px-4 py-3 text-slate-300">{e.date}</td>
                   <td className="px-4 py-3 text-white font-medium">{e.merchant_name}</td>
                   <td className="px-4 py-3">
-                    <span className="px-2 py-0.5 bg-primary-500/10 text-primary-400 rounded text-xs">{e.category}</span>
+                    <span className="px-2.5 py-0.5 bg-primary-500/10 border border-primary-500/20 text-primary-400 rounded-full text-xs font-medium shadow-[0_0_6px_rgba(139,92,246,0.15)]">{e.category}</span>
                   </td>
                   <td className="px-4 py-3 text-white">₹{e.amount.toLocaleString("en-IN")}</td>
                   <td className="px-4 py-3 text-slate-400">{e.payment_mode}</td>
@@ -180,7 +191,7 @@ export default function ExpensesPage() {
           <button
             onClick={handleSubmit}
             disabled={saving}
-            className="w-full bg-primary-600 hover:bg-primary-500 disabled:opacity-50 text-white rounded-lg py-2.5 font-medium transition-colors"
+            className="w-full bg-primary-600 hover:bg-primary-500 hover:shadow-[0_0_15px_rgba(139,92,246,0.5)] disabled:opacity-50 text-white rounded-lg py-2.5 font-medium transition-all duration-300"
           >
             {saving ? "Saving…" : editTarget ? "Update Expense" : "Add Expense"}
           </button>

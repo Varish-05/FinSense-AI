@@ -171,9 +171,9 @@ while len(rows) < TARGET_ROWS:
 rows.sort(key=lambda r: r["date"])
 
 # Write CSV
-with open(OUTPUT_PATH, "w", newline="") as f:
+with open(OUTPUT_PATH, "w", newline="", encoding="utf-8") as f:
     writer = csv.DictWriter(f, fieldnames=["user_id", "date", "amount", "description", "category", "payment_mode"])
     writer.writeheader()
     writer.writerows(rows)
 
-print(f"Dataset generated: {len(rows)} transactions → {OUTPUT_PATH}")
+print(f"Dataset generated: {len(rows)} transactions -> {OUTPUT_PATH}")

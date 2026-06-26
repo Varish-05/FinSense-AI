@@ -30,7 +30,7 @@ os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
 
 # ── Load Data ─────────────────────────────────────────────────────────
 
-print("Loading dataset …")
+print("Loading dataset ...")
 df = pd.read_csv(DATA_PATH)
 df = df.dropna(subset=["description", "category"])
 df["text"] = df["description"].str.lower().str.replace(r"[^a-z0-9 ]", " ", regex=True).str.strip()
@@ -66,7 +66,7 @@ pipeline = Pipeline([
 
 # ── Train ─────────────────────────────────────────────────────────────
 
-print("\nTraining TF-IDF + Logistic Regression …")
+print("\nTraining TF-IDF + Logistic Regression ...")
 pipeline.fit(X_train, y_train)
 
 # ── Evaluate ──────────────────────────────────────────────────────────
@@ -81,8 +81,8 @@ print(classification_report(y_test, y_pred))
 # ── Save ──────────────────────────────────────────────────────────────
 
 joblib.dump(pipeline, MODEL_PATH)
-print(f"Model saved → {MODEL_PATH}")
+print(f"Model saved -> {MODEL_PATH}")
 
 with open(REPORT_PATH, "w") as f:
     json.dump({"accuracy": acc, "report": report}, f, indent=2)
-print(f"Eval report saved → {REPORT_PATH}")
+print(f"Eval report saved -> {REPORT_PATH}")

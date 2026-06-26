@@ -46,14 +46,14 @@ export default function ChatPage() {
         {messages.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             {m.role === "assistant" && (
-              <div className="w-8 h-8 rounded-full bg-primary-500/15 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5">
+              <div className="w-8 h-8 rounded-full bg-primary-500/10 border border-primary-500/30 flex items-center justify-center mr-2 flex-shrink-0 mt-0.5 shadow-[0_0_8px_rgba(139,92,246,0.3)] animate-pulse">
                 <BrainCircuit size={16} className="text-primary-400"/>
               </div>
             )}
-            <div className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+            <div className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-lg ${
               m.role === "user"
-                ? "bg-primary-600 text-white rounded-tr-sm"
-                : "bg-dark-900 border border-slate-800 text-slate-200 rounded-tl-sm"
+                ? "bg-gradient-to-r from-primary-600 to-accent-purple text-white rounded-tr-sm border border-primary-500/20 shadow-primary-500/10"
+                : "bg-dark-800/80 border border-slate-800/80 text-slate-200 rounded-tl-sm"
             }`}>
               {m.text}
             </div>
@@ -103,7 +103,7 @@ export default function ChatPage() {
         <button
           onClick={() => send()}
           disabled={!input.trim() || loading}
-          className="bg-primary-600 hover:bg-primary-500 disabled:opacity-40 text-white rounded-xl px-4 transition-colors"
+          className="bg-primary-600 hover:bg-primary-500 hover:shadow-[0_0_15px_rgba(139,92,246,0.4)] disabled:opacity-40 text-white rounded-xl px-4 transition-all duration-300"
         >
           <Send size={18}/>
         </button>

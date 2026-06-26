@@ -151,7 +151,11 @@ async def upload_csv(
 
     contents = await file.read()
     try:
-        df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+        try:
+            contents_str = contents.decode("utf-8")
+        except UnicodeDecodeError:
+            contents_str = contents.decode("latin-1")
+        df = pd.read_csv(io.StringIO(contents_str))
     except Exception:
         raise HTTPException(status_code=400, detail="Could not parse CSV file")
 
