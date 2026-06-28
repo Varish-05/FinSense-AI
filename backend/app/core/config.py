@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     # Environment
     ENVIRONMENT: str = "development"
 
+    # CORS Allowed Origins (comma-separated list)
+    BACKEND_CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000"
+
     class Config:
         env_file = ".env"
         case_sensitive = True

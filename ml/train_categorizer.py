@@ -59,7 +59,6 @@ pipeline = Pipeline([
         C=5.0,
         max_iter=1000,
         solver="lbfgs",
-        multi_class="multinomial",
         random_state=42,
     )),
 ])
