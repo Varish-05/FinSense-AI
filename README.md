@@ -130,6 +130,19 @@ pytest tests/ -v
 
 ---
 
+## Production Deployment
+
+### Frontend (Vercel)
+The React frontend is optimized and configured for deployment on Vercel:
+- Includes `vercel.json` SPA rewrite rules to support page refreshes and deep-linking.
+- Environment variables: Set `REACT_APP_API_URL` in your Vercel Dashboard to point to your deployed backend API URL (e.g., `https://finsense-backend.onrender.com`).
+
+### Backend & Database
+Due to size limits on machine learning libraries like `torch` and `tensorflow`, the FastAPI backend should be hosted on a container-supporting host (e.g., Render, Railway, or AWS EC2) with an external PostgreSQL database (e.g., Neon).
+- Configure `BACKEND_CORS_ORIGINS` in your backend environment variables to allow your Vercel deployment URL (e.g., `https://finsense-ai.vercel.app`).
+
+---
+
 ## Authors
 
 Varish Gada | B.Tech CS AI & ML | Jain University | 2027
